@@ -1,11 +1,11 @@
-from list_CRUD_1 import *
+from file_CRUD_1 import *
 
-pets = load_default_data()
+pets = load_pets()
 id_counter = 3
+
 while True:
     print_info()
     ivestis = input()
-
     match ivestis:
         case "1":
             print_pets(pets)

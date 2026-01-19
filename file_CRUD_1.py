@@ -1,4 +1,16 @@
-from list_demo_data import load_pets
+import csv
+
+headers = ["id", "name", "species", "birth_year"]
+
+def load_pets():
+    with open("pets.csv", mode="r", encoding="utf-8") as file:
+        return list(csv.DictReader(file))
+
+def save_pets(pets):
+    with open("pets.csv", mode="w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=headers)
+        writer.writeheader()
+        writer.writerows(pets)
 
 def print_info():
     print("--------------------------------------------------------------------------")
@@ -21,7 +33,7 @@ def create_pets(pets, id_counter):
     rusis = input()
     print("Įveskite naujo gyvūno gimimo metus:")
     gim_metai = int(input())
-    id_counter += 1
+    id_counter = int(pets[-1]["id"]) + 1 if len(pets) > 0 else 1
     pet = {
         "id": id_counter,
         "name": vardas,
@@ -29,6 +41,7 @@ def create_pets(pets, id_counter):
         "birth_year": gim_metai,
     }
     pets.append(pet)
+    save_pets(pets)
     return id_counter
 
 def edit_pets(pets):
@@ -45,6 +58,7 @@ def edit_pets(pets):
             pet["species"] = input()
             print("Įveskite gyvūno gimimo metus:")
             pet["birth_year"] = input()
+    save_pets(pets)
 
 def remove_pets(pets):
     print("Gyvūno pašalinimas iš sąrašo")
@@ -55,3 +69,4 @@ def remove_pets(pets):
             print(
                 f'{pet["id"]}. PAŠALINAMA: gyvūnas: {pet["name"]}, {pet["species"]}, gimimo metai: {pet["birth_year"]}.')
             pets.remove(pet)
+    save_pets(pets)
